@@ -57,7 +57,7 @@ from frog.views import LOGGER
 from frog.models import Gallery, Image, Video, UserPref
 from frog.common import Result, JsonResponse, getObjectsFromGuids, getPutData
 
-
+@login_required
 def index(request, obj_id=None):
     """Handles a request based on method and calls the appropriate function"""
     if request.method == 'GET':
@@ -71,6 +71,7 @@ def index(request, obj_id=None):
         getPutData(request)
         return delete(request, obj_id)
 
+@login_required
 def get(request, obj_id=None):
     if obj_id:
         obj = Gallery.objects.get(pk=obj_id)

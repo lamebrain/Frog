@@ -57,18 +57,15 @@ def login_(request):
     res = Result()
 
     res.isSuccess = True
-    email = request.POST.get('email', 'noauthor@domain.com').lower()
-    username = email.split('@')[0]
-    first_name = request.POST.get('first_name', 'no').lower()
-    last_name = request.POST.get('last_name', 'author').lower()
 
-    user = authenticate(username=username)
-    user.first_name = first_name
-    user.last_name = last_name
-    user.email = email
-    user.save()
+    email = request.POST.get('email').lower();
+    password = request.POST.get('password');
+    user = authenticate(username=email, password=password)
+    
+    if user is None:
+        return render(request, 'frog/index.html', {'message': 'Invalid credentials'})
 
-    Tag.objects.get_or_create(name=first_name + ' ' + last_name, defaults={'artist': True})
+    Tag.objects.get_or_create(name=user.first_name + ' ' + user.last_name, defaults={'artist': True})
 
     if user.is_active:
         login(request, user)

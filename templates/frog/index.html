@@ -28,16 +28,13 @@
                             <input id='frog_login_email' type='email' name='email' autofocus='autofocus' required='required' />
                         </p>
                         <p>
-                            <label for='frog_login_first_name'>First:</label>
-                            <input id='frog_login_first_name' type='text' name='first_name' required='required' />
-                        </p>
-                        <p>
-                            <label for='frog_login_last_name'>Last:</label>
-                            <input id='frog_login_last_name' type='text' name='last_name' required='required' />
-                        </p>
+                            <label for='frog_login_password'>Password:</label>
+                            <input id='frog_login_password' type='password' name='password' required='required' />
+                        </p> 
                         <p>
                             <input id='frog_login_button' type='submit' value='Login' class='disabled1' />
                         </p>
+                        <p style="color:red;font-weight:normal;font-size:14px">{{message}}</p>
                     </form>
                 </section>
             </div>

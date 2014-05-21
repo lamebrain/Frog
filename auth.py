@@ -20,6 +20,8 @@
 ##################################################################################################
 
 
+import ldap
+from django.conf import settings
 from django.contrib.auth.models import User
 
 class SimpleAuthBackend(object):
@@ -35,16 +37,43 @@ class SimpleAuthBackend(object):
     supports_inactive_user = False
 
     def authenticate(self, username=None, password=None):
+        
+        ldap.set_option(ldap.OPT_NETWORK_TIMEOUT, 30)
+        ldap.set_option(ldap.OPT_REFERRALS, 0)  # Required for Active Directory
+        ldap.set_option(ldap.OPT_PROTOCOL_VERSION, ldap.VERSION3)
+
         try:
-            user = User.objects.get(username=username)
+            try:
+                ld = ldap.initialize(settings.LDAP_HOST)
+                ld.simple_bind_s(username, password)
+            except ldap.LDAPError, e:
+                if username != "admin":
+                    print ("ldap error", e)
+                    #ld.unbind()
+                    return None
+
+            uname = username.split('@')[0]
+            user = User.objects.get(username=uname)
         except User.DoesNotExist:
-            # Create a new user. Note that we can set password
-            # to anything, because it won't be checked; the password
-            # from settings.py will.
-            user = User(username=username, password='rad')
+            # create a new user.  we are using this for the user repository only
+            # and not authentication, since that's handled by AD, so we will set the same 
+            # password for everyone. 
+
+            searchFilter = "(&(objectCategory=person)(objectClass=user)(userPrincipalName=" + username + "))"
+            results = ld.search_st(base=settings.LDAP_BASE_DN,scope=ldap.SCOPE_SUBTREE,filterstr=searchFilter,timeout=30)
+            
+            first_name = results[0][1]['givenName'][0]
+            last_name = results[0][1]['sn'][0]
+            email = results[0][1]['userPrincipalName'][0]
+            # saving user
+            user = User(username=uname, password='rad')
             user.is_staff = False
             user.is_superuser = False
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
             user.save()
+
         return user
 
     def get_user(self, user_id):
