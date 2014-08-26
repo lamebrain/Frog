@@ -127,7 +127,7 @@ Frog.Thumbnail = new Class({
         var dim = Frog.util.fitToRect(size - this.Padding, size - this.Padding, this.width, this.height);
         this.element.setStyles({
             width: size,
-            height: size + 30
+            height: size + 40
         });
         this.imgLink.setStyles(dim);
         this.img.setStyles({
