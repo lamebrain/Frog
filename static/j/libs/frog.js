@@ -283,10 +283,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                             this.hide();
                             var el = $('frog_comments');
                             var guid = Frog.util.getData(el, 'frog_guid');
-                            var id = Frog.util.getData(el, 'frog_gallery_id');
                             
                             self.input.show();
                             self.input.focus();
+
                             if (self.bSave) {
                                 self.bSave.show();
                                 self.bCancel.show();
@@ -296,6 +296,9 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                                     text: 'Save',
                                     renderTo: bot,
                                     handler: function() {
+                                        var el = $('frog_comments');
+                                        var guid = Frog.util.getData(el, 'frog_guid')
+                                        var id = Frog.util.getData(el, 'frog_gallery_id');
                                         new Request.JSON({
                                             url: '/frog/comment/'
                                         }).POST({guid: guid, comment: self.input.value});
@@ -312,6 +315,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                                     }
                                 })
                             }
+                            $('frog_comments_block').scrollTo(0, 1000);
                         }
                     }
                 }).inject(bot);
@@ -340,7 +344,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 }
             }
             this.top.set('html', html);
-            window.addEvent('mousewheel', this.scrollEvent);
+            //window.addEvent('mousewheel', this.scrollEvent);
             this.container.setStyle('top', window.pageYOffset);
         },
         close: function() {

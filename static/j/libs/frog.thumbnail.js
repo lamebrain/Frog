@@ -5,7 +5,8 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in 
 the Software without restriction, including without limitation the rights to use,
 copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the 
-Software, and to permit persons to whom the Software is furnished to do so, 
+Software, and to perm
+it persons to whom the Software is furnished to do so,
 subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all 
@@ -100,6 +101,7 @@ Frog.Thumbnail = new Class({
 
         var bot = new Element('div').inject(this.element);
         this.title = new Element('span', {'text': this.object.title}).inject(bot);
+        this.timestamp = new Element('div', {'text': new Date(this.object.created).toLocaleDateString()}).inject(bot);
         var artistDiv = new Element('div', {'text': 'Artist: '}).inject(bot);
         this.artist = new Element('a', {'href': "javascript:void(0);", 'class': 'frog-tag'}).inject(artistDiv);
         var commentLink = new Element('div', {
@@ -195,6 +197,7 @@ Frog.Thumbnail = new Class({
             return true;
         }
         this.img.src = this.object.thumbnail;
+        console.log('thumbnail: ' + this.img.src);
         this.loaded = true;
     },
     getTagElement: function(id) {
