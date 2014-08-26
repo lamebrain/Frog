@@ -315,7 +315,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                                     }
                                 })
                             }
-                            $('frog_comments_block').scrollTo(0, 1000);
+                            $('frog_comments_block').scrollTo(0, 20000);
                         }
                     }
                 }).inject(bot);

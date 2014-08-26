@@ -24,7 +24,7 @@ import ldap
 from django.conf import settings
 from django.contrib.auth.models import User
 
-class SimpleAuthBackend(object):
+class LDAPAuthBackend(object):
     """
     Authenticate against the settings ADMIN_LOGIN and ADMIN_PASSWORD.
 
